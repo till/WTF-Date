@@ -1,0 +1,30 @@
+{
+    "name": "till/wtfdate",
+    "description": "A WIP library to provide a somewhat API-compatible replacement for Zend_Date.",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Till Klampaeckel",
+            "email": "till@php.net"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "zendframework/zendframework1-dl",
+                "version": "1.12.1",
+                "dist": {
+                    "url": "https://packages.zendframework.com/releases/ZendFramework-1.12.1/ZendFramework-1.12.1-minimal.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "classmap": [ "src/", "tests/Wtf"]
+    },
+    "require-dev": {
+        "zendframework/zendframework1-dl": "1.12.1"
+    }
+}
