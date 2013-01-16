@@ -41,22 +41,8 @@ class Date
      */
     public function __construct($date = null, $format = null, $locale = null)
     {
-        if (null === $date) {
-            $date = new \DateTime();
-        }
-        $this->rawDate = $date;
-        $this->format  = $format;
-        $this->locale  = $locale;
-
-        if ($date instanceof \DateTime) {
-            $this->date = $date;
-            return;
-        }
-        if (null === $format) {
-            $this->date = new \DateTime($date);
-            return;
-        }
-        $this->date = Helper::convertToDateTime($this->rawDate, $this->format);
+        $this->locale = $locale;
+        $this->setDate($date, $format);
     }
 
     /**
@@ -65,6 +51,35 @@ class Date
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     * @param mixed $format
+     *
+     * @return \Wtf\Date
+     */
+    public function setDate($date, $format = null)
+    {
+        if (null === $date) {
+            $date = new \DateTime();
+        }
+
+        $this->format  = $format;
+        $this->rawDate = $date;
+
+        if ($date instanceof \DateTime) {
+            $this->date = $date;
+            return $this;
+        }
+
+        if (null === $format) {
+            $this->date = new \DateTime($date);
+            return $this;
+        }
+
+        $this->date = Helper::convertToDateTime($this->rawDate, $this->format);
+        return $this;
     }
 
     /**
