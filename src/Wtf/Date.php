@@ -82,6 +82,17 @@ class Date
         return $this;
     }
 
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    public function setFormat($format)
+    {
+        $this->format = $format;
+        return $this;
+    }
+
     /**
      * Figure out if 'this' date is earlier than the supplied date parameter.
      *
