@@ -94,4 +94,11 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
         $date1 = new Date($dateStr, $format);
         $this->assertEquals($date1->getDate(), $dateTime);
     }
+
+    public function testNow()
+    {
+        $date = Date::now();
+        $this->assertInstanceOf('\Wtf\Date', $date);
+        $this->assertInstanceOf('\DateTime', $date->getDate());
+    }
 }

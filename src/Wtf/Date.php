@@ -138,4 +138,14 @@ class Date
         }
         return false;
     }
+
+    /**
+     * Create an instance of this class with 'now'.
+     *
+     * @return \Wtf\Date
+     */
+    public static function now()
+    {
+        return new self;
+    }
 }
