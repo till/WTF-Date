@@ -101,4 +101,28 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Wtf\Date', $date);
         $this->assertInstanceOf('\DateTime', $date->getDate());
     }
+
+    public static function validDateProvider()
+    {
+        return array(
+            array(null, null, false),
+            array(new \DateTime(), null, true),
+            array(time(), null, true),
+            array(strval(time()), null, true),
+            array('2012-01-01', 'Y-m-d', true),
+            array('2012-02-31', 'Y-m-d', false),
+        );
+    }
+
+    /**
+     * @dataProvider validDateProvider
+     */
+    public function testIsDate($date, $format, $assertion)
+    {
+        if (true === $assertion) {
+            $this->assertTrue(Date::isDate($date, $format));
+        } else {
+            $this->assertFalse(Date::isDate($date, $format));
+        }
+    }
 }

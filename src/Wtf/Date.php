@@ -159,4 +159,42 @@ class Date
     {
         return new self;
     }
+
+    /**
+     * Check if the supplied date parameter is a valid date.
+     *
+     * @param mixed $date
+     * @param mixed $format
+     * @param mixed $locale
+     *
+     * @return bool
+     * @throws \InvalidArgumentException
+     */
+    public static function isDate($date, $format = null, $locale = null)
+    {
+        if (empty($date)) {
+            return false;
+        }
+        if ($date instanceof \DateTime) {
+            return true;
+        }
+        if (is_numeric($date) || is_string($date)) {
+            if (null === $format) {
+                $dateTime = new \DateTime($date);
+                if (false === $dateTime) {
+                    return false;
+                }
+                return true;
+            }
+            $dateTime = \DateTime::createFromFormat($format, $date);
+            $errors   = $dateTime->getLastErrors();
+            if ($errors['warning_count'] > 0 || $errors['error_count'] > 0) {
+                return false;
+            }
+            return true;
+        }
+        throw new \InvalidArgumentException(
+            sprintf("Date is of type. Not sure how to deal with it yet!", gettype($date))
+        );
+    }
 }
