@@ -126,11 +126,18 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     *
+     * @return array
+     */
     public static function addProvider()
     {
         return array(
             array('2012-01-01', array('+1 day', null, null), new \DateTime('2012-01-02')),
-            array('2013-03-01 00:00:00', array('+2 week', null, null), new \DateTime('2012-03-15 00:00:00')),
+            array('2013-03-01 00:00:00', array('+2 week', null, null), new \DateTime('2013-03-15 00:00:00')),
+            array('2013-03-04', array(1, 'd', null), new \DateTime('2013-03-05')),
+            array('2013-05-01', array('-1 year', null, null), new \DateTime('2012-05-01')),
+            array('2013-01-01', array(-5, 'm', null), new \DateTime('2012-08-01')),
         );
     }
 
@@ -147,8 +154,8 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
             $date->getDate()->getTimestamp(),
             sprintf(
                 "Failed: expected: %s, actual: %s",
-                $end->format('Y-m-d h:i:s'),
-                $date->getDate()->format('Y-m-d H:i:s')
+                $end->format('c'),
+                $date->getDate()->format('c')
             )
         );
     }

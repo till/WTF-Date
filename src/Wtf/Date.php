@@ -100,32 +100,13 @@ class Date
      * @param string $part
      * @param mixed  $locale
      *
+     * @return \Wtf\Date
      * @throws \InvalidArgumentException
      */
     public function add($date, $part = 'TS', $locale = null)
     {
-        if (is_numeric($date)) {
-            $part = strtoupper($part);
-            switch ($part) {
-            case 'Y':
-            case 'M':
-            case 'W':
-            case 'D':
-            case 'H':
-            case 'M':
-                $interval = new \DateInterval(sprintf('P%d%s', $date, $part));
-                break;
-            case 'TS':
-            case 'S':
-                $interval = new \DateInterval(sprintf('PT%dS', $date));
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf("Unknown part: %s", $part));
-            }
-        } else {
-            $interval = \DateInterval::createFromDateString($date);
-        }
-        $this->date->add($interval);
+        $this->modify($date, $part, $locale);
+        return $this;
     }
 
     /**
@@ -231,5 +212,57 @@ class Date
         throw new \InvalidArgumentException(
             sprintf("Date is of type. Not sure how to deal with it yet!", gettype($date))
         );
+    }
+
+    /**
+     * Modify 'this' date.
+     *
+     * @param mixed  $date
+     * @param string $part
+     * @param null   $locale
+     *
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    protected function modify($date, $part, $locale)
+    {
+        if (is_numeric($date)) {
+
+            $interval = $date;
+            $positive = true;
+
+            if ($interval < 0) {
+                $positive  = false;
+                $interval *= -1;
+            }
+
+            $part = strtoupper($part);
+            switch ($part) {
+            case 'Y':
+            case 'M':
+            case 'W':
+            case 'D':
+            case 'H':
+            case 'M':
+                $dateInterval = new \DateInterval(sprintf('P%d%s', $interval, $part));
+                break;
+            case 'TS':
+            case 'S':
+                $dateInterval = new \DateInterval(sprintf('PT%dS', $interval));
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf("Unknown part: %s", $part));
+            }
+
+            if (false === $positive) {
+                $this->date->sub($dateInterval);
+                return;
+            }
+            $this->date->add($dateInterval);
+            return;
+        }
+        $dateInterval = \DateInterval::createFromDateString($date);
+        $this->date->add($dateInterval);
+        return;
     }
 }
