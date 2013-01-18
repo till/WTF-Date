@@ -125,4 +125,31 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
             $this->assertFalse(Date::isDate($date, $format));
         }
     }
+
+    public static function addProvider()
+    {
+        return array(
+            array('2012-01-01', array('+1 day', null, null), new \DateTime('2012-01-02')),
+            array('2013-03-01 00:00:00', array('+2 week', null, null), new \DateTime('2012-03-15 00:00:00')),
+        );
+    }
+
+    /**
+     * @dataProvider addProvider
+     */
+    public function testAdd($start, array $params, \DateTime $end)
+    {
+        $date = new Date($start);
+        call_user_func_array(array($date, 'add'), $params);
+
+        $this->assertEquals(
+            $end->getTimestamp(),
+            $date->getDate()->getTimestamp(),
+            sprintf(
+                "Failed: expected: %s, actual: %s",
+                $end->format('Y-m-d h:i:s'),
+                $date->getDate()->format('Y-m-d H:i:s')
+            )
+        );
+    }
 }

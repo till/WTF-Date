@@ -94,6 +94,41 @@ class Date
     }
 
     /**
+     * Add to 'this' date.
+     *
+     * @param mixed  $date
+     * @param string $part
+     * @param mixed  $locale
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function add($date, $part = 'TS', $locale = null)
+    {
+        if (is_numeric($date)) {
+            $part = strtoupper($part);
+            switch ($part) {
+            case 'Y':
+            case 'M':
+            case 'W':
+            case 'D':
+            case 'H':
+            case 'M':
+                $interval = new \DateInterval(sprintf('P%d%s', $date, $part));
+                break;
+            case 'TS':
+            case 'S':
+                $interval = new \DateInterval(sprintf('PT%dS', $date));
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf("Unknown part: %s", $part));
+            }
+        } else {
+            $interval = \DateInterval::createFromDateString($date);
+        }
+        $this->date->add($interval);
+    }
+
+    /**
      * Figure out if 'this' date is earlier than the supplied date parameter.
      *
      * @param \DateTime $date
