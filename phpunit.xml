@@ -2,6 +2,7 @@
     <testsuites>
         <testsuite>
             <file>./tests/Wtf/Date/Test/DateTestCase.php</file>
+            <file>./tests/Wtf/Date/Test/Date/HelperTestCase.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

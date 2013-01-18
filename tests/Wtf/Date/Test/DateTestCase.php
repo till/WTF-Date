@@ -13,6 +13,13 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSetDateTime()
+    {
+        $dateTime = new \DateTime('2012-01-01');
+        $date = new Date($dateTime);
+        $this->assertSame($dateTime, $date->getDate());
+    }
+
     /**
      * @dataProvider earlierProvider
      */
@@ -74,25 +81,6 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertFalse($date1->isTomorrow());
         }
-    }
-
-    public static function dateProvider()
-    {
-        return array(
-            array(null, new \DateTime(), null),
-            array('2012-01-01', new \DateTime('2012-01-01'), null),
-            array(new \DateTime('2013-01-01'), new \DateTime('2013-01-01'), null),
-            array('00:00:00 01-01-2012', new \DateTime('2012-01-01'), 'H:i:s d-m-Y'),
-        );
-    }
-
-    /**
-     * @dataProvider dateProvider
-     */
-    public function testDate($dateStr, $dateTime, $format)
-    {
-        $date1 = new Date($dateStr, $format);
-        $this->assertEquals($date1->getDate(), $dateTime);
     }
 
     public function testNow()
