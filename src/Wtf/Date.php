@@ -219,24 +219,13 @@ class Date
      *
      * @return string
      */
-    protected function toString()
+    public function __toString()
     {
         $format = $this->getFormat();
         if ($format === null) {
             $format = 'Y-m-d H:i:s';
         }
         return $this->date->format($format);
-    }
-
-    /**
-     * Wrapper for self::toString()
-     *
-     * @return string
-     * @see    self::toString()
-     */
-    public function __toString()
-    {
-        return $this->toString();
     }
 
     /**

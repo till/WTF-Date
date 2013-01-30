@@ -147,4 +147,12 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
             )
         );
     }
+
+    public function testToString()
+    {
+        $dateStr = '2012-01-01 00:00:00';
+        $date    = new Date($dateStr);
+
+        $this->assertSame($dateStr, (string) $date);
+    }
 }
