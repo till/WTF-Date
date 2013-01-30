@@ -265,14 +265,15 @@ class Date
             switch ($part) {
             case 'Y':
             case 'M':
-            case 'W':
             case 'D':
-            case 'H':
-            case 'M':
                 $dateInterval = new \DateInterval(sprintf('P%d%s', $interval, $part));
                 break;
-            case 'TS':
+            case 'H':
+            case 'M':
             case 'S':
+                $dateInterval = new \DateInterval(sprintf('PT%d%s', $interval, $part));
+                break;
+            case 'TS':
                 $dateInterval = new \DateInterval(sprintf('PT%dS', $interval));
                 break;
             default:
