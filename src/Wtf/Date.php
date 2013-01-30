@@ -215,6 +215,31 @@ class Date
     }
 
     /**
+     * Format date into string
+     *
+     * @return string
+     */
+    protected function toString()
+    {
+        $format = $this->getFormat();
+        if ($format === null) {
+            $format = 'Y-m-d H:i:s';
+        }
+        return $this->date->format($format);
+    }
+
+    /**
+     * Wrapper for self::toString()
+     *
+     * @return string
+     * @see    self::toString()
+     */
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+    /**
      * Modify 'this' date.
      *
      * @param mixed  $date
@@ -240,14 +265,15 @@ class Date
             switch ($part) {
             case 'Y':
             case 'M':
-            case 'W':
             case 'D':
-            case 'H':
-            case 'M':
                 $dateInterval = new \DateInterval(sprintf('P%d%s', $interval, $part));
                 break;
-            case 'TS':
+            case 'H':
+            case 'M':
             case 'S':
+                $dateInterval = new \DateInterval(sprintf('PT%d%s', $interval, $part));
+                break;
+            case 'TS':
                 $dateInterval = new \DateInterval(sprintf('PT%dS', $interval));
                 break;
             default:
