@@ -155,4 +155,25 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($dateStr, (string) $date);
     }
+
+    /**
+     * @dataProvider secondProvider
+     */
+    public function testModifyWithSeconds($date, $second, $part, $op, $expected)
+    {
+        if ($op == 'add') {
+            $date->add($second, $part);
+        } else {
+            $this->markTestIncomplete("Missing sub().");
+        }
+        $this->assertEquals($expected->getDate(), $date->getDate());
+    }
+
+    public static function secondProvider()
+    {
+        return array(
+            array(new Date('2013-01-01 01:01:00'), 60, 's', 'add', new Date('2013-01-01 01:02:00')),
+            array(new Date('2013-01-01 00:00:00'), 60, 's', 'sub', new Date('2012-12-31 23:59:00')),
+        );
+    }
 }
