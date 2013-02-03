@@ -22,4 +22,12 @@ class HelperTestCase extends \PHPUnit_Framework_TestCase
         $date = Helper::convertToDateTime($dateStr, $format);
         $this->assertEquals($date->format('c'), $dateTime->format('c'));
     }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testWrongFormat()
+    {
+        Helper::convertToDateTime('2010-01-23 11:23:23', 'Y-m-d');
+    }
 }

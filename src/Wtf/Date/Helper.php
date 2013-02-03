@@ -16,6 +16,10 @@ class Helper
         if (null === $format) {
             return new \DateTime($dateValue);
         }
-        return \DateTime::createFromFormat($format, $dateValue);
+        $dateTime = \DateTime::createFromFormat($format, $dateValue);
+        if (false === $dateTime) {
+            throw new \LogicException(sprintf("Date value '%s' did not parse with format '%s'.", $dateValue, $format));
+        }
+        return $dateTime;
     }
 }

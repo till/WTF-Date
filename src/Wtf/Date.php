@@ -191,27 +191,43 @@ class Date
         if (empty($date)) {
             return false;
         }
+
         if ($date instanceof \DateTime) {
             return true;
         }
-        if (is_numeric($date) || is_string($date)) {
-            if (null === $format) {
+
+        if (is_numeric($date)) {
+            $dt       = new \DateTime();
+            $dateTime = $dt->setTimestamp($date);
+            if ($dateTime instanceof \DateTime) {
+                return true;
+            }
+            return false;
+        }
+
+        if (!is_string($date)) {
+            throw new \InvalidArgumentException("Unknown type supplied: " . var_export($date, true));
+        }
+
+        if (null === $format) {
+            try {
                 $dateTime = new \DateTime($date);
                 if (false === $dateTime) {
                     return false;
                 }
-                return true;
-            }
-            $dateTime = \DateTime::createFromFormat($format, $date);
-            $errors   = $dateTime->getLastErrors();
-            if ($errors['warning_count'] > 0 || $errors['error_count'] > 0) {
+            } catch (\Exception $e) {
                 return false;
             }
             return true;
         }
-        throw new \InvalidArgumentException(
-            sprintf("Date is of type. Not sure how to deal with it yet!", gettype($date))
-        );
+
+        $dateTime = \DateTime::createFromFormat($format, $date);
+        $errors   = $dateTime->getLastErrors();
+        if ($errors['warning_count'] > 0 || $errors['error_count'] > 0) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
